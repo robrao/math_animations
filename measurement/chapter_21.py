@@ -16,10 +16,26 @@ class LawOfSinesAcute(Scene):
         # Initial triangle
         self.play(ShowCreation(acutet), runtime=2)
 
-        # TODO: fix placement, font type
-        a = Text("a").next_to(acutet, LEFT, buff=0.1)
-        b = Text("b").next_to(acutet, RIGHT, buff=0.1)
-        c = Text("c").next_to(acutet, BOTTOM, buff=0.1)
+        # placing side labels
+        top_corner = acutet.get_corner(TOP)
+        top_corner[0] = acutet.get_corner(LEFT)[0] + 2  # NOTE: because inital top corner +2 from left
+        bottom_half = acutet.get_bottom()
+        bottom_half[0] = top_corner[0]
+        left_corner = acutet.get_corner(LEFT) + acutet.get_bottom()
+        right_corner = acutet.get_corner(RIGHT) + acutet.get_bottom()
+
+        left_buf = [-1.0, 0, 0]
+        right_buf = [1.0, 0, 0]
+        top_buf = [0, 0.5, 0]
+        btm_buf = [-0.5, -1.0, 0]
+        a_placement = (left_corner + left_buf + top_corner + top_buf)/2
+        b_placement = (right_corner + right_buf + top_corner + top_buf)/2
+        c_placement = (left_corner + left_buf + right_corner + btm_buf)/2
+
+        # TODO: find better font styles
+        a = Text("a").move_to(a_placement)
+        b = Text("b").move_to(b_placement)
+        c = Text("c").move_to(c_placement)
 
         self.play(Write(a))
         self.play(Write(b))
@@ -29,11 +45,7 @@ class LawOfSinesAcute(Scene):
 
         # TODO: dased line would require multiple height lines
         # ie. one height line divided into multiple pieces
-        top_corner = acutet.get_corner(TOP)
-        bottom_corner = acutet.get_bottom()
-        top_corner[0] = acutet.get_corner(LEFT)[0] + 2  # NOTE: because inital top corner +2 from left
-        bottom_corner[0] = top_corner[0]
-        lh = Line(top_corner, bottom_corner).set_color(ORANGE)
+        lh = Line(top_corner, bottom_half).set_color(ORANGE)
         self.play(ShowCreation(lh))
 
         # self.play(acutet.animate.move_to([0,0,0]), runtime=2)
