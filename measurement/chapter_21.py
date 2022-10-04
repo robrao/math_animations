@@ -3,6 +3,13 @@ from manimlib import *
 
 class LawOfSinesAcute(Scene):
     def construct(self):
+        law = Text("sin A:sin B:sin C = a:b:c").set_color(ORANGE)
+        self.play(Write(law), runtime=3)
+        self.wait(3)
+        self.clear()
+
+        # TODO: make all drawings output of a function.
+        # only need initial
         # create acute triangle
         tp = [0, 3, 0]
         lf = [-2, 0, 0]
@@ -47,6 +54,10 @@ class LawOfSinesAcute(Scene):
         # ie. one height line divided into multiple pieces
         lh = Line(top_corner, bottom_half).set_color(ORANGE)
         self.play(ShowCreation(lh))
+
+        h = Text("h").set_color(ORANGE)
+        h.next_to(lh)
+        self.play(Write(h))
 
         # self.play(acutet.animate.move_to([0,0,0]), runtime=2)
         self.wait()
