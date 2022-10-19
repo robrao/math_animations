@@ -5,7 +5,7 @@ class LawOfSinesAcute(Scene):
     def construct(self):
         law = Text("sin A:sin B:sin C = a:b:c").set_color(ORANGE)
         self.play(Write(law), runtime=3)
-        self.wait(3)
+        self.wait()
         self.clear()
 
         # TODO: make all drawings output of a function.
@@ -48,9 +48,37 @@ class LawOfSinesAcute(Scene):
         self.play(Write(b))
         self.play(Write(c))
 
-        # TODO: add angle arcs and labels
+        # NOTE: add angle B arc and labels
+        arcB_start = np.array([(left_corner[0] - left_corner[0] * 0.10), left_corner[1], 0])
+        slopeA = (tp[1]-lf[1])/(tp[0]-lf[0])
+        intercept = bottom_half[1]
+        arcB_endpoint = (slopeA * (arcB_start[0] - left_corner[0])) + intercept
+        arcB_end = np.array([arcB_start[0], arcB_endpoint, 0])
+        arcB = ArcBetweenPoints(start=arcB_start, end=arcB_end, stroke_color=YELLOW)
+        self.play(ShowCreation(arcB))
 
-        # TODO: dased line would require multiple height lines
+        # NOTE: angle B label
+        labelB_pos = arcB.get_corner(BOTTOM)
+        labelB_pos = np.array([labelB_pos[0] + 0.35, labelB_pos[1] + 0.35, 0])
+        B = Text("B", color=YELLOW).move_to(labelB_pos)
+        self.play(ShowCreation(B))
+
+        # NOTE: add angle A arc and labels
+        ratio_dist = (left_corner[0] - arcB_start[0])/(left_corner[0] - bottom_half[0])
+        arcA_start = np.array([(right_corner[0] - right_corner[0] * ratio_dist), bottom_half[1], 0])
+        slopeB = (rt[1]-tp[1])/(rt[0]-tp[0])
+        arcA_endpoint = (slopeB * (arcA_start[0] - right_corner[0])) + intercept
+        arcA_end = np.array([arcA_start[0], arcA_endpoint, 0])
+        arcA = ArcBetweenPoints(end=arcA_start, start=arcA_end, stroke_color=YELLOW)  # NOTE: end and start reveresed so arc curves into triangle
+        self.play(ShowCreation(arcA))
+
+        # NOTE: angle A label
+        labelA_pos = arcA.get_corner(BOTTOM)
+        labelA_pos = np.array([labelA_pos[0] - 0.35, labelA_pos[1] + 0.30, 0])
+        A = Text("A", color=YELLOW).move_to(labelA_pos)
+        self.play(ShowCreation(A))
+
+        # TODO: dashed line would require multiple height lines
         # ie. one height line divided into multiple pieces
         lh = Line(top_corner, bottom_half).set_color(ORANGE)
         self.play(ShowCreation(lh))
@@ -58,6 +86,16 @@ class LawOfSinesAcute(Scene):
         h = Text("h").set_color(ORANGE)
         h.next_to(lh)
         self.play(Write(h))
+
+        # TODO: NEXT
+        # * group all labels, arcs, and lines, and shrink + move them to top left corner
+        # * show algebra to calculate sinA:sinB = a:b
+
+        # TODO: NEXT NEXT
+        # * move grouped items from left corner expand them
+        # * clear angles and h line
+        # * rotate triangle
+        # * repeat steps to calculate sinC:sinA/B = c:a/b
 
         # self.play(acutet.animate.move_to([0,0,0]), runtime=2)
         self.wait()
