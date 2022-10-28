@@ -3,8 +3,8 @@ from manimlib import *
 
 class LawOfSinesAcute(Scene):
     def construct(self):
-        law = Text("sin A:sin B:sin C = a:b:c").set_color(ORANGE)
-        self.play(Write(law), runtime=3)
+        law = Tex(r"\sin{A}:\sin{B}:\sin{C} = a:b:c")
+        self.play(Write(law), runtime=2)
         self.wait()
         self.clear()
 
@@ -40,9 +40,9 @@ class LawOfSinesAcute(Scene):
         c_placement = (left_corner + left_buf + right_corner + btm_buf)/2
 
         # TODO: find better font styles
-        a = Text("a").move_to(a_placement)
-        b = Text("b").move_to(b_placement)
-        c = Text("c").move_to(c_placement)
+        a = Tex(r"a").move_to(a_placement)
+        b = Tex(r"b").move_to(b_placement)
+        c = Tex(r"c").move_to(c_placement)
 
         self.play(Write(a))
         self.play(Write(b))
@@ -60,7 +60,7 @@ class LawOfSinesAcute(Scene):
         # NOTE: angle B label
         labelB_pos = arcB.get_corner(BOTTOM)
         labelB_pos = np.array([labelB_pos[0] + 0.35, labelB_pos[1] + 0.35, 0])
-        B = Text("B", color=YELLOW).move_to(labelB_pos)
+        B = Tex(r"B", color=YELLOW).move_to(labelB_pos)
         self.play(ShowCreation(B))
 
         # NOTE: add angle A arc and labels
@@ -75,7 +75,7 @@ class LawOfSinesAcute(Scene):
         # NOTE: angle A label
         labelA_pos = arcA.get_corner(BOTTOM)
         labelA_pos = np.array([labelA_pos[0] - 0.35, labelA_pos[1] + 0.30, 0])
-        A = Text("A", color=YELLOW).move_to(labelA_pos)
+        A = Tex(r"A", color=YELLOW).move_to(labelA_pos)
         self.play(ShowCreation(A))
 
         # TODO: dashed line would require multiple height lines
@@ -87,9 +87,28 @@ class LawOfSinesAcute(Scene):
         h.next_to(lh)
         self.play(Write(h))
 
-        # TODO: NEXT
-        # * group all labels, arcs, and lines, and shrink + move them to top left corner
-        # * show algebra to calculate sinA:sinB = a:b
+        # NOTE: group diagram and move to create space for algebra
+        diagram = Group(acutet, a, b, c, arcA, arcB, A, B, lh, h)
+        self.play(diagram.animate.move_to(np.array([0, 1.7,0])))
+
+        # NOTE: Show algebra
+        sinB = Tex(r"\sin{B}=\frac{h}{a}").move_to(np.array([-2, -2, 0]))
+        sinA = Tex(r"\sin{A}=\frac{h}{b}").move_to(np.array([1, -2, 0]))
+        self.play(ShowCreation(sinB))
+        self.play(ShowCreation(sinA))
+
+        # TODO: fix transtion; not smooth + blurred
+        eq_point = np.array([-1,-2,0])
+        eq1 = VGroup(sinB, sinA)
+        eq2 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{\frac{h}{a}}{\frac{h}{b}}").move_to(eq_point)
+        self.play(ReplacementTransform(eq1, eq2))
+
+        eq3 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{h}{a}\times\frac{b}{h}").move_to(eq_point)
+        self.play(ReplacementTransform(eq2, eq3))
+
+        # TODO: transition is off...
+        eq4 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{b}{a}").move_to(eq_point)
+        self.play(ReplacementTransform(eq3, eq4))
 
         # TODO: NEXT NEXT
         # * move grouped items from left corner expand them
