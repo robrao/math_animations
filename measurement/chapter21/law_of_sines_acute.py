@@ -5,7 +5,7 @@ class LawOfSinesAcute(Scene):
     def construct(self):
         law = Tex(r"\sin{A}:\sin{B}:\sin{C} = a:b:c")
         self.play(Write(law), runtime=2)
-        self.wait()
+        self.wait(1)
         self.clear()
 
         # TODO: make all drawings output of a function.
@@ -112,9 +112,9 @@ class LawOfSinesAcute(Scene):
 
         eq4 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{b}{a}").move_to(eq_point)
         self.play(ReplacementTransform(eq3, eq4), runtime=2)
-        self.wait(1)
+        self.wait(2)
 
-        eq5 = Tex(r"\sin{A} : \sin{B} = a : b").move_to(eq_point)
+        eq5 = Tex(r"\sin{B} : \sin{A} = b : a").move_to(eq_point)
         self.play(ReplacementTransform(eq4, eq5), runtime=2)
         self.wait(2)
 
