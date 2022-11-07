@@ -39,7 +39,6 @@ class LawOfSinesAcute(Scene):
         b_placement = (right_corner + right_buf + top_corner + top_buf)/2
         c_placement = (left_corner + left_buf + right_corner + btm_buf)/2
 
-        # TODO: find better font styles
         a = Tex(r"a").move_to(a_placement)
         b = Tex(r"b").move_to(b_placement)
         c = Tex(r"c").move_to(c_placement)
@@ -96,22 +95,31 @@ class LawOfSinesAcute(Scene):
         sinA = Tex(r"\sin{A}=\frac{h}{b}").move_to(np.array([1, -2, 0]))
         self.play(ShowCreation(sinB))
         self.play(ShowCreation(sinA))
+        self.wait(2)
 
-        # TODO: fix transtion; not smooth + blurred
-        eq_point = np.array([-1,-2,0])
+        # NOTE: clear previous equations
         eq1 = VGroup(sinB, sinA)
+        self.remove(eq1)
+
+        eq_point = np.array([-1,-2,0])
         eq2 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{\frac{h}{a}}{\frac{h}{b}}").move_to(eq_point)
-        self.play(ReplacementTransform(eq1, eq2))
+        self.play(Write(eq2))
+        self.wait(2)
 
         eq3 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{h}{a}\times\frac{b}{h}").move_to(eq_point)
-        self.play(ReplacementTransform(eq2, eq3))
+        self.play(ReplacementTransform(eq2, eq3), runtime=2)
+        self.wait(2)
 
-        # TODO: transition is off...
         eq4 = Tex(r"\frac{\sin{B}}{\sin{A}}=\frac{b}{a}").move_to(eq_point)
-        self.play(ReplacementTransform(eq3, eq4))
+        self.play(ReplacementTransform(eq3, eq4), runtime=2)
+        self.wait(1)
 
-        # TODO: NEXT NEXT
-        # * move grouped items from left corner expand them
+        eq5 = Tex(r"\sin{A} : \sin{B} = a : b").move_to(eq_point)
+        self.play(ReplacementTransform(eq4, eq5), runtime=2)
+        self.wait(2)
+
+        # TODO: NEXT
+        # * move grouped items from top, to center
         # * clear angles and h line
         # * rotate triangle
         # * repeat steps to calculate sinC:sinA/B = c:a/b
