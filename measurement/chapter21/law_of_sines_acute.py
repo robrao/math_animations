@@ -3,14 +3,15 @@ from manimlib import *
 
 class LawOfSinesAcute(Scene):
     def construct(self):
-        law = Tex(r"\sin{A}:\sin{B}:\sin{C} = a:b:c")
-        self.play(Write(law), runtime=2)
+        law = Tex(r"\text{Law of Sines:}")
+        law_eq = Tex(r"\sin{A}:\sin{B}:\sin{C} = a:b:c")
+        law_eq.next_to(law, BOTTOM)
+        self.play(Write(law))
+        self.play(Write(law_eq), runtime=2)
         self.wait(1)
         self.clear()
 
-        # TODO: make all drawings output of a function.
-        # only need initial
-        # create acute triangle
+        # NOTE: create acute triangle
         tp = [0, 3, 0]
         lf = [-2, 0, 0]
         rt = [5, 0, 0]
@@ -125,5 +126,4 @@ class LawOfSinesAcute(Scene):
         # * repeat steps to calculate sinC:sinA/B = c:a/b
 
         # self.play(acutet.animate.move_to([0,0,0]), runtime=2)
-        self.wait()
-        self.embed()
+        self.wait(2)
