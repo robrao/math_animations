@@ -24,20 +24,21 @@ class LawOfSinesObtuse(Scene):
 
         self.play(ShowCreation(obtuset), runtime=2)
 
-        top_corner = obtuset.get_corner(TOP)
-        # top_corner[0] = obtuset.get_corner(LEFT)[0]   # NOTE: because inital top corner +2 from left
-        bottom_half = obtuset.get_bottom()
-        bottom_half[0] = top_corner[0]
-        left_corner = top_corner + obtuset.get_bottom()
-        right_corner = obtuset.get_corner(RIGHT) + obtuset.get_bottom()
+        top = obtuset.get_top()
+        bottom = obtuset.get_bottom()
+        left_top = obtuset.get_left()
+        left_btm = left_top - np.array([-1.0, 0, 0])
+        right = obtuset.get_right()
 
-        left_buf = [-1.0, 0, 0]
-        right_buf = [1.0, 0, 0]
-        top_buf = [0, 0.5, 0]
-        btm_buf = [-0.5, -1.0, 0]
-        a_placement = (left_corner + left_buf + top_corner + top_buf)/2
-        b_placement = (right_corner + right_buf + top_corner + top_buf)/2
-        c_placement = (left_corner + left_buf + right_corner + btm_buf)/2
+        left = (left_top + left_btm)/2
+
+        a_buffer = np.array([0, -1.0, 0])
+        b_buffer = np.array([1.0, 1.0, 0])
+        c_buffer = np.array([0, -1.0, 0])
+        a_placement = left + (top + bottom + a_buffer)/2
+        b_placement = (left_top + right + top + bottom + b_buffer)/2
+        c_placement = (left_btm + right + c_buffer)/2 + bottom
+
 
         a = Tex(r"a").move_to(a_placement)
         b = Tex(r"b").move_to(b_placement)
