@@ -27,12 +27,12 @@ class LawOfSinesObtuse(Scene):
         top = obtuset.get_top()
         bottom = obtuset.get_bottom()
         left_top = obtuset.get_left()
-        left_btm = left_top - np.array([-1.0, 0, 0])
+        left_btm = left_top - np.array([-2.0, 0, 0])
         right = obtuset.get_right()
 
         left = (left_top + left_btm)/2
 
-        a_buffer = np.array([0, -1.0, 0])
+        a_buffer = np.array([-1.0, -1.0, 0])
         b_buffer = np.array([1.0, 1.0, 0])
         c_buffer = np.array([0, -1.0, 0])
         a_placement = left + (top + bottom + a_buffer)/2
@@ -47,5 +47,16 @@ class LawOfSinesObtuse(Scene):
         self.play(Write(a))
         self.play(Write(b))
         self.play(Write(c))
+
+        # TODO: create anglesdd
+
+        # NOTE: split obtuse angle with line h
+        lh = Line((left_btm + bottom), (left_top + right + top + bottom)).set_color(ORANGE)
+        self.play(ShowCreation(lh))
+
+        # TODO: fix alignment of h to lh
+        h = Tex(r"h").set_color(ORANGE)
+        h.next_to(lh)
+        self.play(Write(h))
 
         self.embed()
