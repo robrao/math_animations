@@ -51,12 +51,18 @@ class LawOfSinesObtuse(Scene):
         # TODO: create anglesdd
 
         # NOTE: split obtuse angle with line h
-        lh = Line((left_btm + bottom), (left_top + right + top + bottom)).set_color(ORANGE)
+        lbl = left_btm + bottom
+        ltr = left_top + right + top + bottom
+        slope_h = (ltr[1] - lbl[1])/(ltr[0] - lbl[0])
+        lh = Line(lbl, ltr).set_color(ORANGE)
         self.play(ShowCreation(lh))
 
         # TODO: fix alignment of h to lh
         h = Tex(r"h").set_color(ORANGE)
-        h.next_to(lh)
+        hx = 0.5 * (lbl[0] - ltr[0])
+        hy = slope_h * hx
+        hx = hx * 0.50 # buffer fraction since negative # add buffer
+        h.move_to(np.array([hx, hy, 0]))
         self.play(Write(h))
 
         self.embed()
